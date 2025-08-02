@@ -1,5 +1,9 @@
 artifacts:
   - name: Ping-Pong Ball
     emoji: 🏓
+    rarity: Common
+    description: Used for Ping Ponging a ball prolly..
   - name: Bow-and-Arrow
     emoji: 🏹
+    rarity: Common
+    description: A ranged weapon of annihilation

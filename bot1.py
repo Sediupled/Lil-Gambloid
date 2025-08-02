@@ -9,41 +9,75 @@ import os
 import asyncpg
 import psycopg2
 from supabase import create_client, Client
+import json
 
 load_dotenv()
 
-# url: str = os.environ.get("SUPABASE_URL")
-# key: str = os.getenv("SUPABASE_KEY")
-# supabase: Client = create_client(url, key)
+url: str = os.getenv("SUPABASE_URL")
+key: str = os.getenv("SUPABASE_KEY")
+supabase: Client = create_client(url, key)
 
 
 BOT_TOKEN = os.getenv("DISCORD_TOKEN")
 CHANNEL_ID = 1398566565200265268
-
-
-# print("Database URL:", DATABASE_URL)
 
 with open('artifacts.yaml', 'r', encoding='utf-8') as f:
 	items = yaml.safe_load(f)
 
 bot = commands.Bot(command_prefix=">" , intents=discord.Intents.all())
 
-inventory = Inventory()
+def is_table_empty(tableName: str):
+	response = supabase.from_(tableName).select("*").limit(1).execute()
+	data = response.data
 
+	if data:
+		return False
+	else:
+		return True
 
+def getUsernames():
+	response = (
+		supabase.table("users")
+		.select("username")
+		.execute()
+	)
 
+	usernames = [item["username"] for item in response.data]
+	return usernames
+
+def user_create(username: str):
+
+	if is_table_empty("users"):
+		nextId = 1
+	else:
+		response = (
+			supabase.table("users")
+			.select("id")
+			.order("id", desc=True)
+			.limit(1)
+			.execute()
+		)
+		nextId = response.data[0]["id"] + 1
+		print(nextId)
+
+	response = (
+		supabase.table("users")
+		.insert({"id": nextId, "username": username})
+		.execute()
+		)
+
+@bot.event
+async def on_message(message):
+	if message.author == bot.user:
+		return
+	if str(message.author) not in getUsernames():
+		user_create(message.author.name)
+	else:
+		print("User exists")
+	await bot.process_commands(message)
 
 @bot.event
 async def on_ready():
-	# item_data = random.choice(items['artifacts'])
-	# item = Item(item_data['name'], item_data['emoji']) 
-
-	# for i in range(len(items['artifacts'])):
-	# 	response = (
-	# 	    supabase.table("users")
-	# 	    .insert({"id": 1, "name": "Pluto"})
-	# 	    .execute()
-	#     )
 
 	print(f'Bot is ready! Logged in as {bot.user}')
 	print("BJ Time!!!")
@@ -73,7 +107,7 @@ async def fish_error(ctx, error):
 		await ctx.send(f"🕒 You need 	to wait {error.retry_after:.1f} seconds before fishing again!")
 
 @bot.command()
-@commands.cooldown(1, 10, commands.BucketType.user) 
+@commands.cooldown(1, 10, commands.BucketType.user)
 async def inven(ctx):
 	inventory_list = inventory.get_inventory()
 	if not inventory_list:
