@@ -6,16 +6,17 @@ class Item:
 	emoji: str
 	amount: int
 
-	def __init__(self, name, emoji):
+	def __init__(self, name, emoji,amount = 0):
 		self.name = name
 		self.emoji = emoji
-		self.amount = 0
+		self.amount = amount
 
 	def increment_item(self):
 		self.amount+=1
 
 	def change_name(self, new_name):
 		self.name = new_name
+		
 
 	def getItem(self):
 		return self

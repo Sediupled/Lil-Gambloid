@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 @dataclass
 class Inventory:
-
+	user_id: int
 	item_arr: list
 
 	def __init__(self):

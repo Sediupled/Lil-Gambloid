@@ -1,21 +1,15 @@
 from dataclasses import dataclass
-from inventory import Inventory
-
 @dataclass
 class User:
 	name: str
-	inventory: Inventory
+	inventory : list
 
-
-	def __init__(self, name):
+	def __init__(self, name, inventory = []):
 		self.name = name
-		self.Inventory = Inventory()
-
-	def setName(self, name):
-		self.name = name
+		self.inventory = inventory
 
 	def getName(self):
-		return self.name 
+		return self.name
 
 	def getInventory(self):
 		return self.inventory
