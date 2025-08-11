@@ -1,7 +1,7 @@
 from discord.ext import commands
 import discord
-from inventory import Inventory
-from item import Item
+# from inventory import Inventory
+from item import *
 import random
 import yaml
 from dotenv import load_dotenv
@@ -12,6 +12,11 @@ from supabase import create_client, Client
 import user
 import TableOps
 from UserServices import *
+from InventoryServices import *
+import asyncio
+from ItemServices import *
+# import pdb
+
 
 load_dotenv()
 
@@ -54,16 +59,25 @@ async def yo(ctx, arg1 = ""):
 	elif arg1.lower() == "boy":
 		await ctx.send("Fuck off Asmi!!")
 
+# Get items from db and then pick one at random, get name and emoji, add it to inventory in db
 @bot.command()
 @commands.cooldown(1, 5, commands.BucketType.user) 
 async def fish(ctx):
-	item_data = random.choice(items['artifacts'])
-	item = Item(item_data['name'], item_data['emoji'])
-	user = getUser(ctx.author.name)
-	inventory = user.getInventory()
-	inventory.add_item_inven(item)
-	print(f"{item_data['name']}: {item_data['emoji']}")
-	await ctx.send(f"You fished up: {item_data['name']} {item_data['emoji']}")
+	itemList = getAllItems_db()
+	item = random.choice(itemList)
+	print(item)
+	# pdb.set_trace()
+	addItem_db(ctx.author.name,item)
+	#test
+	# await asyncio.sleep(0.1)
+	# user = getUser_db(ctx.author.name)
+	# inventory = user.getInventory()
+	# print(user.getName())
+	# print(inventory)
+	# for i in inventory:
+	# 	print(i.getName(), i.getAmount())
+	print(f"{item.getName()}: {item.getEmoji()}")
+	await ctx.send(f"You fished up: {item.getName()} {item.getEmoji()}")
 
 @fish.error
 async def fish_error(ctx, error):
@@ -74,21 +88,13 @@ async def fish_error(ctx, error):
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def inven(ctx):
 	user = getUser_db(ctx.author.name)
-	print(f"inven ctx name: {ctx.author.name}")
 	inventory = user.getInventory()
 	if not inventory:
-		print("Your Inventory is Empty T_T")
 		await ctx.send(f"Your Inventory is Empty T_T")
 	else:
-		print("there is something heehee, chal coding kar bkl")
-		await ctx.send(f"there is something heehee, chal coding kar bkl")
-
-		print("These are your items: \n")
 		await ctx.send(f"These are your items: \n")
-	for item in inventory:
-		print(f"{item.getEmoji()} {item.getName()}: {item.getAmount()}")
-		await ctx.send(f"{item.getEmoji()} {item.getName()}: {item.getAmount()}")
-	# await ctx.send(msg)
+		for item in inventory:
+			await ctx.send(f"{item.getEmoji()} {item.getName()}: {item.getAmount()}")
 @inven.error
 async def inven_error(ctx, error):
 	if isinstance(error, commands.CommandOnCooldown):

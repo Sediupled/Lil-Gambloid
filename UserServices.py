@@ -1,9 +1,9 @@
 from supabase import create_client, Client 
 from dotenv import load_dotenv
 import os
-from TableOps import *
+# from TableOps import *
 from user import *
-from InventoryServices import *
+from InventoryServices import getInventory_db
 
 load_dotenv()
 
@@ -18,16 +18,10 @@ def getUser_db(username: str):
 		.eq("username", username)
 		.execute()
 	)
-	
-	print(f" Get user response: {response}")
 
 	for person in response.data:
-		print(person)
 		username = person['username']
-		print(username) 
 		inventory = getInventory_db(username)
-		type(inventory)
-		print(inventory) #not executing
 	return User(username, inventory)
 
 def getUsernames():
@@ -74,6 +68,14 @@ def updateUsername(username: str):
 	)
 	print(f"Old Name: {self.name} -> New Name: {username}")
 
+def getUserId_db(username: str):
+	response = (
+		supabase.table("users")
+		.select("id")
+		.eq("username", username)
+		.execute()
+	)
+	return int(response.data[0]["id"])
 
 # getUser("properchai")
 
