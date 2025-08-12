@@ -1,38 +1,19 @@
-from supabase import create_client, Client 
-from dotenv import load_dotenv
-import os
-from TableOps import *
-from user import *
-from item import *
-
-load_dotenv()
-
-url: str = os.getenv("SUPABASE_URL")
-key: str = os.getenv("SUPABASE_KEY")
-supabase: Client = create_client(url, key)
+from item import Item
+from DatabaseServices import get_item_from_db, get_all_items
 
 # gets Item from db by name and returns an Item obj
 def getItem_db(name: str, amount: int):
-	response = (
-		supabase.table("items")
-		.select("*")
-		.eq("name", name)
-		.execute()	
-	)
-
-	item = response.data[0]
+	item_response = get_item_from_db(name)
+	item = item_response.data[0]
 	return Item(item["name"], item["emoji"], amount)
 
 # Gets All Item from DB
 def getAllItems_db():
 	ItemList = []
 
-	response = (
-		supabase.table("items")
-		.select("*")
-		.execute()	
-	)
-	for item in response.data:
+	all_items_response = get_all_items()
+	
+	for item in all_items_response.data:
 		item =  Item(item["name"], item["emoji"], 1)
 		ItemList.append(item)
 

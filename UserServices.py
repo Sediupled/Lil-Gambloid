@@ -1,82 +1,31 @@
-from supabase import create_client, Client 
-from dotenv import load_dotenv
-import os
-# from TableOps import *
-from user import *
+from TableOps import is_table_empty
+from user import User
+from DatabaseServices import get_user_id,get_usernames_all_users,get_user,add_new_user
 from InventoryServices import getInventory_db
 
-load_dotenv()
+def getUserId_db(username: str):
+	user_id_response = get_user_id(username)
+	return int(response.data[0]["id"])
 
-url: str = os.getenv("SUPABASE_URL")
-key: str = os.getenv("SUPABASE_KEY")
-supabase: Client = create_client(url, key)
+def getUsernames():
+	usernames_response = get_usernames_all_users()
+	usernames = [item["username"] for item in usernames_response.data]
+	return usernames
 
 def getUser_db(username: str):
-	response = (
-		supabase.table("users")
-		.select("*")
-		.eq("username", username)
-		.execute()
-	)
+	user_response = get_user(username)
 
-	for person in response.data:
+	for person in user_response.data:
 		username = person['username']
 		inventory = getInventory_db(username)
 	return User(username, inventory)
-
-def getUsernames():
-	response = (
-		supabase.table("users")
-		.select("username")
-		.execute()
-	)
-	usernames = [item["username"] for item in response.data]
-	return usernames
 
 # adds user to table and returns user object
 def createUser(username: str):
 	if is_table_empty("users"):
 		nextId = 1
 	else:
-		print("table is not empty")
-		response = (
-			supabase.table("users")
-			.select("id")
-			.order("id", desc=True)
-			.limit(1)
-			.execute()
-		)
-	nextId = response.data[0]["id"] + 1
-
-	response = (
-		supabase.table("users")
-		.insert({"id": nextId,"username": username})
-		.execute()
-	)
+		add_new_user(username)
 
 	return User(username)
 	print(nextId)
-
-
-# finds user by name and updates it to the new name
-def updateUsername(username: str):
-	response = (
-		supabase.table("users")
-		.update({"username": username})
-		.eq("username", self.name)
-		.execute()
-	)
-	print(f"Old Name: {self.name} -> New Name: {username}")
-
-def getUserId_db(username: str):
-	response = (
-		supabase.table("users")
-		.select("id")
-		.eq("username", username)
-		.execute()
-	)
-	return int(response.data[0]["id"])
-
-# getUser("properchai")
-
-# createUser("test_user_1")

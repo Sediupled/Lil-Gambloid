@@ -1,20 +1,14 @@
 from discord.ext import commands
 import discord
-# from inventory import Inventory
-from item import *
 import random
-import yaml
 from dotenv import load_dotenv
 import os
-import asyncpg
-import psycopg2
-from supabase import create_client, Client 
-import user
-import TableOps
-from UserServices import *
-from InventoryServices import *
-import asyncio
-from ItemServices import *
+from supabase import create_client, Client
+from item import Item
+from user import User
+from UserServices import getUsernames, getUser_db, createUser
+from InventoryServices import addItem_db
+from ItemServices import getAllItems_db
 # import pdb
 
 
@@ -27,9 +21,6 @@ supabase: Client = create_client(url, key)
 
 BOT_TOKEN = os.getenv("DISCORD_TOKEN")
 CHANNEL_ID = 1398566565200265268
-
-# with open('artifacts.yaml', 'r', encoding='utf-8') as f:
-# 	items = yaml.safe_load(f)
 
 bot = commands.Bot(command_prefix=">" , intents=discord.Intents.all())
 
@@ -63,10 +54,11 @@ async def yo(ctx, arg1 = ""):
 @bot.command()
 @commands.cooldown(1, 5, commands.BucketType.user) 
 async def fish(ctx):
+	# pdb.set_trace()
 	itemList = getAllItems_db()
 	item = random.choice(itemList)
 	print(item)
-	# pdb.set_trace()
+	
 	addItem_db(ctx.author.name,item)
 	#test
 	# await asyncio.sleep(0.1)
@@ -87,6 +79,7 @@ async def fish_error(ctx, error):
 @bot.command()
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def inven(ctx):
+	# pdb.set_trace()
 	user = getUser_db(ctx.author.name)
 	inventory = user.getInventory()
 	if not inventory:
