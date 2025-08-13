@@ -115,7 +115,18 @@ def add_new_item(username, item):
 	ID_response = get_user_id(username)
 	ID = int(ID_response.data[0]["id"])
 	response = (
-			supabase.table("inventory")
-			.insert({"user_id": ID, "quantity": 1, "item_name": item.getName()})
-			.execute()
-		)
+		supabase.table("inventory")
+		.insert({"user_id": ID, "quantity": 1, "item_name": item.getName()})
+		.execute()
+	)
+
+def get_rarity_wise_item(rarity: str):
+
+	response = (
+		supabase.table("items")
+		.select("*")
+		.eq("rarity", rarity)
+		.execute()
+	)
+
+	return response

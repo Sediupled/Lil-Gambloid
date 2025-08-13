@@ -5,11 +5,15 @@ class Item:
 	name: str
 	emoji: str
 	amount: int
+	rarity: int
+	description: str
 
-	def __init__(self, name, emoji,amount = 0):
+	def __init__(self, name, emoji,amount, rarity, description):
 		self.name = name
 		self.emoji = emoji
 		self.amount = amount
+		self.rarity = rarity
+		self.description = description
 
 	def increment_item(self):
 		self.amount+=1
@@ -29,3 +33,9 @@ class Item:
 
 	def getEmoji(self):
 		return self.emoji
+
+	def getRarity(self):
+		return self.rarity
+
+	def getDescription(self):
+		return self.description

@@ -3,7 +3,113 @@ artifacts:
     emoji: 🏓
     rarity: Common
     description: Used for Ping Ponging a ball prolly..
+    
   - name: Bow-and-Arrow
     emoji: 🏹
     rarity: Common
     description: A ranged weapon of annihilation
+
+  - name: chippittos
+    emoji: 🐿️
+    rarity: Common
+    description: The only currency that matters, matter of fact put it all on PURPY
+
+  - name: Loser's Booze
+    emoji: 🍺
+    rarity: Common
+    description: Lowers judgment, boosts confidence, guarantees bad decisions.
+
+  - name: Coin of Never Enough
+    emoji: 🪙
+    rarity: Uncommon
+    description: Doubles your money or halves your soul.
+
+  - name: Dice of Regret
+    emoji: 🎲
+    rarity: Rare
+    description: Every roll feels like your last, and sometimes it is.
+
+  - name: Purp Kush of Curses
+    emoji: 💨
+    rarity: Legendary
+    description: The dankest smoke—every puff hexes your enemies and yourself.
+
+  - name: Amulet of Last Bets
+    emoji: 📿
+    rarity: Rare
+    description: Increases luck when you're down to your last coin.
+
+  - name: Wizard's IOU
+    emoji: 📜
+    rarity: Common
+    description: Promises great power; delivers crushing debt.
+
+  - name: Ale of Infinite Rounds
+    emoji: 🍻
+    rarity: Uncommon
+    description: Never runs out, neither does your tab.
+
+  - name: Chalice of Bad Decisions
+    emoji: 🍷
+    rarity: Epic
+    description: Makes any plan sound like a good one.
+
+  - name: Scroll of Questionable Odds
+    emoji: 📄
+    rarity: Rare
+    description: Lets you see the future, but only the losing outcomes.
+
+  - name: Crown of the Overleveraged King
+    emoji: 👑
+    rarity: Legendary
+    description: Heavy is the head that took too many loans.
+
+  - name: Potion of Maybe Winning
+    emoji: 🧪
+    rarity: Common
+    description: A 5% boost to luck... and a 95% boost to bankruptcy.
+
+  - name: Gem of False Hope
+    emoji: 💎
+    rarity: Uncommon
+    description: Glitters just enough to keep you playing.
+
+  - name: Staff of All-In
+    emoji: 🪄
+    rarity: Epic
+    description: Channels every bit of magic into one massive, reckless gamble.
+
+  - name: Ogre’s Poker Chips
+    emoji: 🪙
+    rarity: Rare
+    description: Worth more to the ogre than in any casino.
+
+  - name: Belt of Never Walking Away
+    emoji: 🩳
+    rarity: Rare
+    description: Keeps you glued to the table until you lose it all.
+
+  - name: Bottle of Memory Loss
+    emoji: 🍼
+    rarity: Common
+    description: Erases last night's losses; unfortunately, so does your wallet.
+
+  - name: The House Always Wins
+    emoji: 🏠
+    rarity: Legendary
+    description: An actual sentient house that feeds on your hope.
+
+  - name: Soulbound Slot Token
+    emoji: 🎰
+    rarity: Epic
+    description: Can't be dropped, traded, or stopped from spinning.
+
+  - name: Wizard’s Debt Ledger
+    emoji: 📚
+    rarity: Rare
+    description: Every page is a new way to owe someone something.
+
+  - name: Dragon’s Credit Card
+    emoji: 💳
+    rarity: Legendary
+    description: Infinite credit, infinite interest, infinite flames.

@@ -14,8 +14,8 @@ url: str = os.environ.get("SUPABASE_URL")
 key: str = os.getenv("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
 
-# with open('artifacts.yaml', 'r', encoding='utf-8') as f:
-# 	items = yaml.safe_load(f)
+with open('artifacts.yaml', 'r', encoding='utf-8') as f:
+	items = yaml.safe_load(f)
 
 
 def is_table_empty(tableName: str):
@@ -29,3 +29,13 @@ def is_table_empty(tableName: str):
 
 response = (supabase.table("users").select("*").execute())
 print(response)
+
+
+for i in items["artifacts"]:
+	response = (
+		supabase.table("items")
+		.update({ "emoji": i["emoji"]})
+		.eq("name", i["name"])
+		.execute()
+	)
+print("Done")
