@@ -91,21 +91,22 @@ async def inven_error(ctx, error):
 	if isinstance(error, commands.CommandOnCooldown):
 		await ctx.send(f"🕒 You need to wait {error.retry_after:.1f} seconds before checking your inventory again!")
 
-# @bot.command()
-# @commands.cooldown(1, 10, commands.BucketType.user)
-# async def inven(ctx):
-# 	user = getUser_db(ctx.author.name)
-# 	inventory = user.getInventory()
-# 	if not inventory:
-# 		await ctx.send(f"Your Inventory is Empty T_T")
-# 	else:
-# 		await ctx.send(f"These are your items: \n")
-# 		for item in inventory:
-# 			await ctx.send(f"{item.getEmoji()} {item.getName()}: {item.getAmount()}")
-# @inven.error
-# async def inven_error(ctx, error):
-# 	if isinstance(error, commands.CommandOnCooldown):
-# 		await ctx.send(f"🕒 You need to wait {error.retry_after:.1f} seconds before checking your inventory again!")
+@bot.command()
+@commands.cooldown(1, 10, commands.BucketType.user)
+async def allitems(ctx):
+	msg = "These are all the items: \n"
+	item_list = getAllItems_db()
+
+	for item in item_list:
+		msg += f"{item.getEmoji()} {item.getName()} \n"
+		msg += f"Rarity: {item.getRarity()} \n"
+		msg += "\n"
+
+	await ctx.send(msg)
+@inven.error
+async def inven_error(ctx, error):
+	if isinstance(error, commands.CommandOnCooldown):
+		await ctx.send(f"🕒 You need to wait {error.retry_after:.1f} seconds before checking your inventory again!")
 
 
 bot.run(BOT_TOKEN)
